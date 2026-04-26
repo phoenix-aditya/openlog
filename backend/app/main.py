@@ -6,7 +6,7 @@ from app.api.blogs import router as blogs_router
 from app.api.drafts import router as drafts_router
 from app.api.users import router as users_router
 
-app = FastAPI(title="OpenLog API")
+app = FastAPI(title="OpenLog API", root_path="/api")
 
 app.add_middleware(
     CORSMiddleware,
