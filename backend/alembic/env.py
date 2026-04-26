@@ -1,6 +1,7 @@
 import os
 from logging.config import fileConfig
 
+import sqlalchemy as sa
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
@@ -41,6 +42,9 @@ def run_migrations_online() -> None:
         poolclass=pool.NullPool,
     )
     with connectable.connect() as connection:
+        # Ensure the schema exists before Alembic tries to create alembic_version in it
+        connection.execute(sa.text('CREATE SCHEMA IF NOT EXISTS openlog'))
+        connection.commit()
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
