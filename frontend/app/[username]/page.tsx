@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import BlogCard from "@/components/BlogCard";
 import ProfileDrafts from "@/components/ProfileDrafts";
 
-const API_URL = process.env.INTERNAL_API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const API_URL = (process.env.INTERNAL_API_URL ?? "http://localhost:8000") + "/api";
 
 interface Blog {
   id: string; title: string; slug: string;

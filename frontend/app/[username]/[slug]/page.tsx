@@ -3,7 +3,7 @@ import Link from "next/link";
 import TagBreadcrumb from "@/components/TagBreadcrumb";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 
-const API_URL = process.env.INTERNAL_API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const API_URL = (process.env.INTERNAL_API_URL ?? "http://localhost:8000") + "/api";
 
 interface Blog {
   id: string; title: string; slug: string; author_username: string;
