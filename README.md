@@ -25,32 +25,39 @@ docker-compose up --build
 
 ### Required environment variables (`.env.prod` on the server)
 
+The app reads from the shared platform env file (`/opt/shared/.env.platform`) plus two app-specific secrets injected at deploy time:
+
+**From shared platform env (`/opt/shared/.env.platform`):**
+
 | Variable | Description |
 |----------|-------------|
-| `POSTGRES_USER` | Postgres username |
-| `POSTGRES_PASSWORD` | Postgres password (use a strong value) |
+| `POSTGRES_HOST` | Postgres hostname (e.g. `postgres`) |
+| `POSTGRES_PORT` | Postgres port (e.g. `5432`) |
 | `POSTGRES_DB` | Postgres database name |
-| `JWT_SECRET` | Secret key for signing JWTs — use a long random string (32+ chars) |
-| `STORAGE_ACCESS_KEY` | MinIO root user (also used as S3 access key) |
-| `STORAGE_SECRET_KEY` | MinIO root password (also used as S3 secret key) |
-| `DOCKER_USERNAME` | Your Docker Hub username (used to pull images) |
+| `POSTGRES_USER` | Postgres username |
+| `POSTGRES_PASSWORD` | Postgres password |
+| `MINIO_ENDPOINT` | MinIO S3 endpoint (e.g. `http://minio:9000`) |
+| `MINIO_ROOT_USER` | MinIO access key |
+| `MINIO_ROOT_PASSWORD` | MinIO secret key |
 
-### GitHub Actions secrets (for CI/CD)
+**App-specific (GitHub/GitLab secrets):**
+
+| Secret | Description |
+|--------|-------------|
+| `OPENLOG_SECRET_KEY` | JWT signing secret — long random string |
+| `OPENLOG_NEXT_PUBLIC_API_URL` | Public backend URL e.g. `https://api.openlog.in` (baked into frontend image at build time) |
+
+### GitHub Actions secrets (for image builds)
 
 | Secret | Description |
 |--------|-------------|
 | `DOCKER_USERNAME` | Docker Hub username |
 | `DOCKER_PASSWORD` | Docker Hub access token |
-| `NEXT_PUBLIC_API_URL` | Public URL of the backend e.g. `https://api.openlog.in` |
-| `DROPLET_HOST` | Server IP address |
-| `DROPLET_SSH_KEY` | Private SSH key for the server |
+| `OPENLOG_NEXT_PUBLIC_API_URL` | Public backend URL e.g. `https://api.openlog.in` (baked into frontend image) |
 
-### Deploy
+### Release
 
-1. Push to GitHub
-2. Go to Actions → "Release Docker Images" → Run workflow
-3. Images are built and pushed to Docker Hub
-4. Server pulls new images and restarts containers automatically
+Go to Actions → "Release Docker Images" → Run workflow. Pick version, which image to build, and write a changelog. Images are pushed to Docker Hub and a GitHub release is created. Deployment is handled by a separate repo.
 
 ### First-time server setup
 
