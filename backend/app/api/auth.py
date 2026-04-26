@@ -18,9 +18,3 @@ def register(body: RegisterRequest, db: Session = Depends(get_db)):
 def login(body: LoginRequest, db: Session = Depends(get_db)):
     token = auth_service.login(db, email=body.email, password=body.password)
     return TokenResponse(access_token=token)
-
-
-@router.get("/google/callback", response_model=TokenResponse)
-def google_callback(code: str, db: Session = Depends(get_db)):
-    token = auth_service.google_oauth(db, code=code)
-    return TokenResponse(access_token=token)
