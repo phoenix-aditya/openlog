@@ -1,5 +1,5 @@
-// Typed API client — attaches JWT from localStorage
-const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000") + "/api";
+// API client — calls /api/... relative to the current origin (no hardcoded URL needed)
+const API_PREFIX = "/api";
 
 function getToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -14,7 +14,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const res = await fetch(`${API_URL}${path}`, { ...options, headers });
+  const res = await fetch(`${API_PREFIX}${path}`, { ...options, headers });
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: res.statusText }));
     throw Object.assign(new Error(error.detail ?? "Request failed"), { status: res.status });
