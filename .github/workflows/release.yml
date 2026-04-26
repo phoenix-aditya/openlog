@@ -72,7 +72,7 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ secrets.OPENLOG_NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/openlog:frontend-${{ inputs.version }}
             ${{ secrets.DOCKER_USERNAME }}/openlog:frontend-latest
